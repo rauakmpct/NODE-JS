@@ -1,8 +1,10 @@
 // alert ('Hello')
 const addTaskbtn = document.getElementById('addTask')
 const taskTextField = document.getElementById('task')
-let taskArray = []
 const recodsDisplay = document.getElementById('records')
+const btnText=addTaskbtn.innerText
+let taskArray = []
+let Edit_id=null
 // data get
 let objstr = localStorage.getItem('tasks')
 // console.log(objstr)
@@ -18,10 +20,17 @@ displayTask()
 addTaskbtn.onclick = () => {
     const name = taskTextField.value
     // alert(name)
-    taskArray.push({ 'taskname': name })
+    if(Edit_id !=null){
+        taskArray.splice(Edit_id,1,{'taskname':name})
+    }else {
+        taskArray.push({ 'taskname': name })
+
+    }
+    
     // console.log(taskArray)
     savetask(taskArray)
     taskTextField.value=''
+    addTaskbtn.innerText=btnText
 }
 
 function savetask(taskArray) {
@@ -46,5 +55,13 @@ function displayTask(){
 }
 
 function DeleteInfo(id){
-    alert(id)
+    alert("Do you want to delete"+ id)
+    taskArray.splice(id,1)
+    savetask(taskArray)
+} 
+function EditInfo(id){
+    // alert("id")
+    Edit_id=id
+    taskTextField.value=taskArray[id].taskname
+    addTaskbtn.innerText='Update task'
 }
